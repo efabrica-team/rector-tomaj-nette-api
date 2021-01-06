@@ -1,0 +1,11 @@
+{
+    "name": "efabrica/rector-tomaj-nette-api",
+    "require": {
+        "rector/rector-prefixed": ">= 0.9.3 <= 0.9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rector\\TomajNetteApi\\Rules\\": "src/Rules"
+        }
+    }
+}
