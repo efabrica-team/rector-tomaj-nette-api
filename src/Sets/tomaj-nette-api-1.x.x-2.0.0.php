@@ -1,5 +1,6 @@
 <?php
 
+use Rector\Core\Configuration\Option;
 use Rector\TomajNetteApi\Rules\ChangeApiListingOnClickToCallback;
 use Rector\TomajNetteApi\Rules\CreateApiConsoleControlRector;
 use Rector\TomajNetteApi\Rules\CreateApiListingControlRector;
@@ -24,6 +25,9 @@ use Symplify\SymfonyPhpConfig\ValueObjectInliner;
 
 return static function (ContainerConfigurator $containerConfigurator): void
 {
+    $parameters = $containerConfigurator->parameters();
+    $parameters->set(Option::AUTOLOAD_PATHS, __DIR__ . '/../Rules');
+
     $services = $containerConfigurator->services();
 
     $services->set(CreateApiListingControlRector::class);
