@@ -1,5 +1,7 @@
 <?php
 
+use Rector\Composer\Rector\ChangePackageVersionRector;
+use Rector\Composer\ValueObject\PackageAndVersion;
 use Rector\Core\Configuration\Option;
 use Rector\TomajNetteApi\Rules\ChangeApiListingOnClickToCallback;
 use Rector\TomajNetteApi\Rules\CreateApiConsoleControlRector;
@@ -25,9 +27,6 @@ use Symplify\SymfonyPhpConfig\ValueObjectInliner;
 
 return static function (ContainerConfigurator $containerConfigurator): void
 {
-    $parameters = $containerConfigurator->parameters();
-    $parameters->set(Option::AUTOLOAD_PATHS, __DIR__ . '/../Rules');
-
     $services = $containerConfigurator->services();
 
     $services->set(CreateApiListingControlRector::class);
@@ -222,5 +221,12 @@ return static function (ContainerConfigurator $containerConfigurator): void
                 'getApi'
             ),
         ]),
+    ]]);
+
+    $services->set(ChangePackageVersionRector::class)
+        ->call('configure', [[
+            ChangePackageVersionRector::PACKAGES_AND_VERSIONS => ValueObjectInliner::inline([
+                new PackageAndVersion('tomaj/nette-api', '^2.0')
+        ])
     ]]);
 };

@@ -1,7 +1,7 @@
 {
     "name": "efabrica/rector-tomaj-nette-api",
     "require": {
-        "rector/rector-prefixed": "^0.9.10"
+        "rector/rector-prefixed": "^0.9.16"
     },
     "autoload": {
         "psr-4": {
