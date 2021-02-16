@@ -1,6 +1,6 @@
 <?php
 
-use Rector\Composer\Rector\ChangePackageVersionRector;
+use Rector\Composer\Rector\ChangePackageVersionComposerRector;
 use Rector\Composer\ValueObject\PackageAndVersion;
 use Rector\Core\Configuration\Option;
 use Rector\TomajNetteApi\Rules\ChangeApiListingOnClickToCallback;
@@ -223,9 +223,9 @@ return static function (ContainerConfigurator $containerConfigurator): void
         ]),
     ]]);
 
-    $services->set(ChangePackageVersionRector::class)
+    $services->set(ChangePackageVersionComposerRector::class)
         ->call('configure', [[
-            ChangePackageVersionRector::PACKAGES_AND_VERSIONS => ValueObjectInliner::inline([
+            ChangePackageVersionComposerRector::PACKAGES_AND_VERSIONS => ValueObjectInliner::inline([
                 new PackageAndVersion('tomaj/nette-api', '^2.0')
         ])
     ]]);
