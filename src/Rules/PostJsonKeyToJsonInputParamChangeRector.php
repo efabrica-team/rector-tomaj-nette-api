@@ -90,7 +90,7 @@ class PostJsonKeyToJsonInputParamChangeRector extends AbstractRector
                                 continue;
                             }
                         } elseif ($typeNode instanceof String_) {
-                            $value = $this->getValue($typeNode);
+                            $value = $typeNode->value;
                             if ($value !== 'POST_JSON_KEY') {
                                 $items[] = $returnItem;
                                 continue;
@@ -119,15 +119,15 @@ class PostJsonKeyToJsonInputParamChangeRector extends AbstractRector
                                 $isRequired = true;
                             }
                         } elseif ($isRequiredNode instanceof ConstFetch) {
-                            $value = $this->getValue($isRequiredNode);
-                            if ($value === true) {
+                            $value = $this->getName($isRequiredNode);
+                            if ($value === 'true') {
                                 $isRequired = true;
                             }
                         }
 
                         $availableValuesNode = $returnItemValue->args[3] ?? null;
                         if ($availableValuesNode) {
-                            $availableValuesNodeValue = $this->getValue($availableValuesNode->value);
+                            $availableValuesNodeValue = $this->getName($availableValuesNode->value);
                             if ($availableValuesNodeValue !== 'null') {
                                 $availableValues = $availableValuesNodeValue;
                             }
@@ -135,8 +135,8 @@ class PostJsonKeyToJsonInputParamChangeRector extends AbstractRector
 
                         $isMultiNode = $returnItemValue->args[4]->value ?? null;
                         if ($isMultiNode instanceof ConstFetch) {
-                            $value = $this->getValue($isMultiNode);
-                            if ($value === true) {
+                            $value = $this->getName($isMultiNode);
+                            if ($value === 'true') {
                                 $type = 'array';
                             }
                         }

@@ -52,11 +52,8 @@ class InputParamChangeRector extends AbstractRector
             } elseif ($name === 'Tomaj\NetteApi\Params\InputParam::TYPE_POST_RAW') {
                 $newClassName = 'Tomaj\NetteApi\Params\RawInputParam';
             }
-
-            // TODO TYPE_POST_JSON_KEY - na json treba prekonvertovat specialnym inym sposobom
         } elseif ($typeNode instanceof String_) {
-
-            $value = $this->getValue($typeNode);
+            $value = $typeNode->value;
             if ($value === 'GET') {
                 $newClassName = 'Tomaj\NetteApi\Params\GetInputParam';
             } elseif ($value === 'POST') {
@@ -70,8 +67,6 @@ class InputParamChangeRector extends AbstractRector
             } elseif ($value === 'TYPE_POST_RAW') {
                 $newClassName = 'Tomaj\NetteApi\Params\RawInputParam';
             }
-
-            // TODO TYPE_POST_JSON_KEY - na json treba prekonvertovat specialnym inym sposobom
         }
 
         if (!$newClassName) {
@@ -94,8 +89,8 @@ class InputParamChangeRector extends AbstractRector
                 $isRequired = true;
             }
         } elseif ($isRequiredNode instanceof ConstFetch) {
-            $value = $this->getValue($isRequiredNode);
-            if ($value === true) {
+            $value = $this->getName($isRequiredNode);
+            if ($value === 'true') {
                 $isRequired = true;
             }
         }
@@ -106,7 +101,7 @@ class InputParamChangeRector extends AbstractRector
         // transform available values
         $availableValuesNode = $node->args[3] ?? null;
         if ($availableValuesNode && $availableValuesNode->value instanceof ConstFetch) {
-            $availableValuesNodeValue = $this->getValue($availableValuesNode->value);
+            $availableValuesNodeValue = $this->getName($availableValuesNode->value);
             if ($availableValuesNodeValue === 'null') {
                 $availableValuesNode = null;
             }
@@ -119,8 +114,8 @@ class InputParamChangeRector extends AbstractRector
         $isMulti = false;
         $isMultiNode = $node->args[4]->value ?? null;
         if ($isMultiNode instanceof ConstFetch) {
-            $value = $this->getValue($isMultiNode);
-            if ($value === true) {
+            $value = $this->getName($isMultiNode);
+            if ($value === 'true') {
                 $isMulti = true;
             }
         }
