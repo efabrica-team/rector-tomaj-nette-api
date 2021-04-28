@@ -2,6 +2,7 @@
 
 namespace Rector\TomajNetteApi\Rules;
 
+use PHPStan\Type\ObjectType;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Name;
@@ -39,7 +40,7 @@ class PostJsonKeyToJsonInputParamChangeRector extends AbstractRector
     public function refactor(Node $node): ?Node
     {
         $parentNode = $node->getAttribute(AttributeKey::PARENT_NODE);
-        if (!$parentNode || !$this->isObjectType($parentNode, 'Tomaj\NetteApi\Handlers\ApiHandlerInterface')) {
+        if (!$parentNode || !$this->isObjectType($parentNode, new ObjectType('Tomaj\NetteApi\Handlers\ApiHandlerInterface'))) {
             return null;
         }
 

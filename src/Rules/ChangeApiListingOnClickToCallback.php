@@ -2,6 +2,7 @@
 
 namespace Rector\TomajNetteApi\Rules;
 
+use PHPStan\Type\ObjectType;
 use PhpParser\Node;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\MethodCall;
@@ -27,7 +28,7 @@ class ChangeApiListingOnClickToCallback extends AbstractRector
             return null;
         }
 
-        if (!$this->isObjectType($node->var, 'Tomaj\NetteApi\Component\ApiListingControl')) {
+        if (!$this->isObjectType($node->var, new ObjectType('Tomaj\NetteApi\Component\ApiListingControl'))) {
             return null;
         }
 

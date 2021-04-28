@@ -2,7 +2,6 @@
 
 use Rector\Composer\Rector\ChangePackageVersionComposerRector;
 use Rector\Composer\ValueObject\PackageAndVersion;
-use Rector\Core\Configuration\Option;
 use Rector\TomajNetteApi\Rules\ChangeApiListingOnClickToCallback;
 use Rector\TomajNetteApi\Rules\CreateApiConsoleControlRector;
 use Rector\TomajNetteApi\Rules\CreateApiListingControlRector;

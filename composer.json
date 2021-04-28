@@ -1,7 +1,8 @@
 {
     "name": "efabrica/rector-tomaj-nette-api",
+    "description": "Rector upgrade set for package tomaj/nette-api",
     "require": {
-        "rector/rector-prefixed": "^0.9.29"
+        "rector/rector-prefixed": "^0.10.11"
     },
     "autoload": {
         "psr-4": {
