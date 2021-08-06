@@ -2,7 +2,9 @@
     "name": "efabrica/rector-tomaj-nette-api",
     "description": "Rector upgrade set for package tomaj/nette-api",
     "require": {
-        "rector/rector-prefixed": "^0.10.11"
+        "ext-json": "*",
+        "rector/rector-prefixed": "^0.10.11",
+        "tomaj/nette-api": "^1.15"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5"
