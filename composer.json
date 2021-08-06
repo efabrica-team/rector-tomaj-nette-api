@@ -3,11 +3,11 @@
     "description": "Rector upgrade set for package tomaj/nette-api",
     "require": {
         "ext-json": "*",
-        "rector/rector-prefixed": "^0.10.11",
-        "tomaj/nette-api": "^1.15"
+        "rector/rector-prefixed": "^0.10.11"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.5"
+        "phpunit/phpunit": "^9.5",
+        "tomaj/nette-api": "^1.15"
     },
     "autoload": {
         "psr-4": {
