@@ -2,7 +2,7 @@
 
 use Rector\Composer\Rector\ChangePackageVersionComposerRector;
 use Rector\Composer\ValueObject\PackageAndVersion;
-use Rector\TomajNetteApi\Rules\ChangeApiListingOnClickToCallback;
+use Rector\TomajNetteApi\Rules\ChangeApiListingOnClickToCallbackRector;
 use Rector\TomajNetteApi\Rules\CreateApiConsoleControlRector;
 use Rector\TomajNetteApi\Rules\CreateApiListingControlRector;
 use Rector\TomajNetteApi\Rules\InputParamChangeRector;
@@ -32,7 +32,7 @@ return static function (ContainerConfigurator $containerConfigurator): void
     $services->set(CreateApiConsoleControlRector::class);
     $services->set(InputParamChangeRector::class);
     $services->set(PostJsonKeyToJsonInputParamChangeRector::class);
-    $services->set(ChangeApiListingOnClickToCallback::class);
+    $services->set(ChangeApiListingOnClickToCallbackRector::class);
 
     $services->set(AddReturnTypeDeclarationRector::class)
         ->call('configure', [[

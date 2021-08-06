@@ -4,9 +4,17 @@
     "require": {
         "rector/rector-prefixed": "^0.10.11"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
     "autoload": {
         "psr-4": {
             "Rector\\TomajNetteApi\\Rules\\": "src/Rules"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Rector\\TomajNetteApi\\Tests\\": "tests"
         }
     }
 }
