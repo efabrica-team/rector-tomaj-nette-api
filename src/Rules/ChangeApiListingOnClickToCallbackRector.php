@@ -11,7 +11,7 @@ use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
-class ChangeApiListingOnClickToCallback extends AbstractRector
+class ChangeApiListingOnClickToCallbackRector extends AbstractRector
 {
     public function getNodeTypes(): array
     {
@@ -38,7 +38,14 @@ class ChangeApiListingOnClickToCallback extends AbstractRector
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition('Changes onClick(Closure) to ->onClick[] = Closure', [
-            new CodeSample('TODO', 'TODO')
+            new CodeSample('$apiListing = new \Tomaj\NetteApi\Component\ApiListingControl($this, \'apiListingControl\', $this->apiDecider);
+$apiListing->onClick(function ($method, $version, $package, $apiAction) {
+    $this->redirect(\'show\', $method, $version, $package, $apiAction);
+});',
+                '$apiListing = new \Tomaj\NetteApi\Component\ApiListingControl($this, \'apiListingControl\', $this->apiDecider);
+$apiListing->onClick[] = function ($method, $version, $package, $apiAction) {
+    $this->redirect(\'show\', $method, $version, $package, $apiAction);
+};')
         ]);
     }
 }

@@ -44,9 +44,13 @@ class CreateApiConsoleControlRector extends AbstractRector
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition('Changes for creating ApiConsoleControl', [
-            new CodeSample(
-                '$apiListing = new \Tomaj\NetteApi\Component\ApiConsoleControl($this, "ApiConsoleControl", $this->apiDecider);',
-                '$apiListing = new \Tomaj\NetteApi\Component\ApiConsoleControl($this->apiDecider);'
+            new CodeSample('
+$api = $this->apiDecider->getApiHandler($this->params["method"], $this->params["version"], $this->params["package"], isset($this->params["apiAction"]) ? $this->params["apiAction"] : null);
+$apiConsole = new \Tomaj\NetteApi\Component\ApiConsoleControl($this->getHttpRequest(), $api["endpoint"], $api["handler"], $api["authorization"]);'
+,
+                '
+$api = $this->apiDecider->getApiHandler($this->params["method"], $this->params["version"], $this->params["package"], isset($this->params["apiAction"]) ? $this->params["apiAction"] : null);
+$apiConsole = new \Tomaj\NetteApi\Component\ApiConsoleControl($this->getHttpRequest(), $api->getEndpoint(), $api->getHandler(), $api->getAuthorization());'
             )]
         );
     }
