@@ -8,6 +8,7 @@ use PhpParser\Node\Arg;
 use PhpParser\Node\Name;
 use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\Expr\Array_;
+use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\BinaryOp\Coalesce;
 use PhpParser\Node\Expr\ConstFetch;
@@ -47,6 +48,10 @@ class PostJsonKeyToJsonInputParamChangeRector extends AbstractRector
         $className = $this->getName($parentNode->name);
         $methodName = $this->getName($node->name);
         if ($methodName === 'params') {
+            $parameters = self::$parameters[$className] ?? null;
+            if ($parameters) {
+                return null;
+            }
             $stmts = $node->stmts;
 
             $subNodes = [
@@ -171,10 +176,10 @@ class PostJsonKeyToJsonInputParamChangeRector extends AbstractRector
                             $schema['required'] = $required;
                         }
 
-                        $items[] = new New_(
+                        $items[] = new ArrayItem(new New_(
                             new FullyQualified('Tomaj\NetteApi\Params\JsonInputParam'),
                             [new Arg(new String_('json')), new Arg(new String_(json_encode($schema, JSON_PRETTY_PRINT)))]
-                        );
+                        ));
                     }
 
                     $returnExpression->items = $items;
