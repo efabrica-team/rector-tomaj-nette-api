@@ -29,6 +29,9 @@ class PostJsonKeyToJsonInputParamChangeRector extends AbstractRector
 {
     private static $parameters = [];
 
+    /** @var bool */
+    private $handleProcessed = false;
+
     public function getNodeTypes(): array
     {
         return [ClassMethod::class];
@@ -189,7 +192,8 @@ class PostJsonKeyToJsonInputParamChangeRector extends AbstractRector
             return new ClassMethod($methodName, $subNodes, $node->getAttributes());
         }
 
-        if ($methodName === 'handle') {
+        if (!$this->handleProcessed && $methodName === 'handle') {
+            $this->handleProcessed = true;
             $parameters = self::$parameters[$className] ?? null;
             if (!$parameters) {
                 return null;
@@ -240,7 +244,7 @@ class PostJsonKeyToJsonInputParamChangeRector extends AbstractRector
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition('Changes all InputParam::TYPE_POST_JSON_KEY to one JsonInputParam', [
-            new CodeSample('public function params()
+                new CodeSample('public function params()
 {
     return [
         new \Tomaj\NetteApi\Params\InputParam(\Tomaj\NetteApi\Params\InputParam::TYPE_POST_JSON_KEY, \'key1\', \Tomaj\NetteApi\Params\InputParam::OPTIONAL, null, true),
@@ -253,7 +257,8 @@ class PostJsonKeyToJsonInputParamChangeRector extends AbstractRector
         (new \Tomaj\NetteApi\Params\JsonInputParam(\'json\', \'{"type":"object","properties":["key1":{"type":"array","key2":{"type":"string"}],"required":["key2"]}\')),
     ];
 }'
-            )]
+                )
+            ]
         );
     }
 }
