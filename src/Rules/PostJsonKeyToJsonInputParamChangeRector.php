@@ -256,9 +256,7 @@ class PostJsonKeyToJsonInputParamChangeRector extends AbstractRector
     return [
         (new \Tomaj\NetteApi\Params\JsonInputParam(\'json\', \'{"type":"object","properties":["key1":{"type":"array","key2":{"type":"string"}],"required":["key2"]}\')),
     ];
-}'
-                )
-            ]
-        );
+}')
+            ]);
     }
 }

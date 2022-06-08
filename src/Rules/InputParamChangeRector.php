@@ -143,8 +143,6 @@ class InputParamChangeRector extends AbstractRector
         (new \Tomaj\NetteApi\Params\PostInputParam("post_param"))->setRequired(),
         (new \Tomaj\NetteApi\Params\GetInputParam("types"))->setRequired()->setAvailableValues(["type1" => "Type 1", "type2" => "Type 2"]),
     ];
-}'
-            )]
-        );
+}')]);
     }
 }

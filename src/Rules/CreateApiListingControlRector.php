@@ -41,7 +41,6 @@ class CreateApiListingControlRector extends AbstractRector
             new CodeSample(
                 '$apiListing = new \Tomaj\NetteApi\Component\ApiListingControl($this, "apiListingControl", $this->apiDecider);',
                 '$apiListing = new \Tomaj\NetteApi\Component\ApiListingControl($this->apiDecider);'
-            )]
-        );
+            )]);
     }
 }

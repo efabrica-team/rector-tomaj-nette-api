@@ -24,8 +24,7 @@ use Rector\TypeDeclaration\ValueObject\AddReturnTypeDeclaration;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symplify\SymfonyPhpConfig\ValueObjectInliner;
 
-return static function (ContainerConfigurator $containerConfigurator): void
-{
+return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
     $services->set(CreateApiListingControlRector::class);
@@ -137,7 +136,7 @@ return static function (ContainerConfigurator $containerConfigurator): void
                     'getUrl',
                     new StringType()
                 ),
-        ])
+            ])
     ]]);
 
     $services->set(AddParamTypeDeclarationRector::class)
@@ -204,7 +203,7 @@ return static function (ContainerConfigurator $containerConfigurator): void
                     new StringType()
                 ),
 
-        ])
+            ])
     ]]);
 
     $services->set(RenameMethodRector::class)->call('configure', [[
@@ -226,6 +225,6 @@ return static function (ContainerConfigurator $containerConfigurator): void
         ->call('configure', [[
             ChangePackageVersionComposerRector::PACKAGES_AND_VERSIONS => ValueObjectInliner::inline([
                 new PackageAndVersion('tomaj/nette-api', '^2.0')
-        ])
+            ])
     ]]);
 };

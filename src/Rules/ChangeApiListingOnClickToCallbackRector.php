@@ -38,14 +38,16 @@ class ChangeApiListingOnClickToCallbackRector extends AbstractRector
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition('Changes onClick(Closure) to ->onClick[] = Closure', [
-            new CodeSample('$apiListing = new \Tomaj\NetteApi\Component\ApiListingControl($this, \'apiListingControl\', $this->apiDecider);
+            new CodeSample(
+                '$apiListing = new \Tomaj\NetteApi\Component\ApiListingControl($this, \'apiListingControl\', $this->apiDecider);
 $apiListing->onClick(function ($method, $version, $package, $apiAction) {
     $this->redirect(\'show\', $method, $version, $package, $apiAction);
 });',
                 '$apiListing = new \Tomaj\NetteApi\Component\ApiListingControl($this, \'apiListingControl\', $this->apiDecider);
 $apiListing->onClick[] = function ($method, $version, $package, $apiAction) {
     $this->redirect(\'show\', $method, $version, $package, $apiAction);
-};')
+};'
+            )
         ]);
     }
 }
