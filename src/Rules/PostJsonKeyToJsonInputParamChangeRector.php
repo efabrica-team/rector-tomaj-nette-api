@@ -15,6 +15,7 @@ use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Scalar\LNumber;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Expression;
@@ -27,10 +28,10 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 class PostJsonKeyToJsonInputParamChangeRector extends AbstractRector
 {
-    private static $parameters = [];
+    /** @var array<string, array<string, array{type: string, available_values: ?array<string|int>, required: bool}>>  */
+    private static array $parameters = [];
 
-    /** @var bool */
-    private $handleProcessed = false;
+    private bool $handleProcessed = false;
 
     public function getNodeTypes(): array
     {
@@ -86,7 +87,7 @@ class PostJsonKeyToJsonInputParamChangeRector extends AbstractRector
                             continue;
                         }
 
-                        $typeNode = $returnItemValue->args[0]->value ?? null;
+                        $typeNode = $returnItemValue->getArgs()[0]->value ?? null;
                         if (!$typeNode) {
                             $items[] = $returnItem;
                             continue;
@@ -106,7 +107,7 @@ class PostJsonKeyToJsonInputParamChangeRector extends AbstractRector
                             }
                         }
 
-                        $paramName = $returnItemValue->args[1]->value ?? null;
+                        $paramName = $returnItemValue->getArgs()[1]->value ?? null;
                         if ($paramName === null) {
                             $items[] = $returnItem;
                             continue;
@@ -121,7 +122,7 @@ class PostJsonKeyToJsonInputParamChangeRector extends AbstractRector
                         $availableValues = null;
 
                         $isRequired = false;
-                        $isRequiredNode = $returnItemValue->args[2]->value ?? null;
+                        $isRequiredNode = $returnItemValue->getArgs()[2]->value ?? null;
                         if ($isRequiredNode instanceof ClassConstFetch) {
                             $name = $this->getName($isRequiredNode);
                             if ($name === 'Tomaj\NetteApi\Params\InputParam::REQUIRED') {
@@ -134,15 +135,21 @@ class PostJsonKeyToJsonInputParamChangeRector extends AbstractRector
                             }
                         }
 
-                        $availableValuesNode = $returnItemValue->args[3] ?? null;
+                        $availableValuesNode = $returnItemValue->getArgs()[3] ?? null;
                         if ($availableValuesNode) {
                             $availableValuesNodeValue = $this->getName($availableValuesNode->value);
-                            if ($availableValuesNodeValue !== 'null') {
-                                $availableValues = $availableValuesNodeValue;
+                            if ($availableValuesNodeValue !== 'null' && $availableValuesNode->value instanceof Array_) {
+                                $availableValues = [];
+                                /** @var ArrayItem $item */
+                                foreach ($availableValuesNode->value->items as $item) {
+                                    if ($item->value instanceof String_ || $item->value instanceof LNumber) {
+                                        $availableValues[] = $item->value->value;
+                                    }
+                                }
                             }
                         }
 
-                        $isMultiNode = $returnItemValue->args[4]->value ?? null;
+                        $isMultiNode = $returnItemValue->getArgs()[4]->value ?? null;
                         if ($isMultiNode instanceof ConstFetch) {
                             $value = $this->getName($isMultiNode);
                             if ($value === 'true') {

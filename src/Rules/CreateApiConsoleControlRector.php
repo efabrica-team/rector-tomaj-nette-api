@@ -4,6 +4,7 @@ namespace Rector\TomajNetteApi\Rules;
 
 use PhpParser\Node;
 use PhpParser\Node\Arg;
+use PhpParser\Node\Expr\ArrayDimFetch;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Name\FullyQualified;
@@ -28,17 +29,20 @@ class CreateApiConsoleControlRector extends AbstractRector
             return null;
         }
 
-        $httpRequestNode = $node->args[0]->value;
-        $endpointNode = $node->args[1]->value;
-        $handlerNode = $node->args[2]->value;
-        $authorizationNode = $node->args[3]->value;
+        $httpRequestNode = $node->getArgs()[0]->value;
+        $endpointNode = $node->getArgs()[1]->value;
+        $handlerNode = $node->getArgs()[2]->value;
+        $authorizationNode = $node->getArgs()[3]->value;
 
-        return new New_(new FullyQualified('Tomaj\NetteApi\Component\ApiConsoleControl'), [
-            new Arg($httpRequestNode),
-            new Arg(new MethodCall($endpointNode->var, 'getEndpoint')),
-            new Arg(new MethodCall($handlerNode->var, 'getHandler')),
-            new Arg(new MethodCall($authorizationNode->var, 'getAuthorization')),
-        ]);
+        if ($endpointNode instanceof ArrayDimFetch && $handlerNode instanceof ArrayDimFetch && $authorizationNode instanceof ArrayDimFetch) {
+            return new New_(new FullyQualified('Tomaj\NetteApi\Component\ApiConsoleControl'), [
+                new Arg($httpRequestNode),
+                new Arg(new MethodCall($endpointNode->var, 'getEndpoint')),
+                new Arg(new MethodCall($handlerNode->var, 'getHandler')),
+                new Arg(new MethodCall($authorizationNode->var, 'getAuthorization')),
+            ]);
+        }
+        return null;
     }
 
     public function getRuleDefinition(): RuleDefinition

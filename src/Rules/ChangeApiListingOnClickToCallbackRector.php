@@ -32,7 +32,15 @@ class ChangeApiListingOnClickToCallbackRector extends AbstractRector
             return null;
         }
 
-        return new Assign(new Variable($node->var->name . '->onClick[]'), $node->args[0]->value);
+        if (!$node->var instanceof Variable) {
+            return null;
+        }
+
+        if (!is_string($node->var->name)) {
+            return null;
+        }
+
+        return new Assign(new Variable($node->var->name . '->onClick[]'), $node->getArgs()[0]->value);
     }
 
     public function getRuleDefinition(): RuleDefinition
