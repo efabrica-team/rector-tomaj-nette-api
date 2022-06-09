@@ -17,6 +17,7 @@ use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Scalar\LNumber;
 use PhpParser\Node\Scalar\String_;
+use PhpParser\Node\Stmt\ClassLike;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Return_;
@@ -45,7 +46,11 @@ class PostJsonKeyToJsonInputParamChangeRector extends AbstractRector
     public function refactor(Node $node): ?Node
     {
         $parentNode = $node->getAttribute(AttributeKey::PARENT_NODE);
-        if (!$parentNode || !$this->isObjectType($parentNode, new ObjectType('Tomaj\NetteApi\Handlers\ApiHandlerInterface'))) {
+        if (!$parentNode instanceof ClassLike || !$this->isObjectType($parentNode, new ObjectType('Tomaj\NetteApi\Handlers\ApiHandlerInterface'))) {
+            return null;
+        }
+
+        if ($parentNode->name === null) {
             return null;
         }
 
@@ -57,6 +62,9 @@ class PostJsonKeyToJsonInputParamChangeRector extends AbstractRector
                 return null;
             }
             $stmts = $node->stmts;
+            if (!is_array($stmts)) {
+                return null;
+            }
 
             $subNodes = [
                 'flags' => $node->flags,
@@ -75,6 +83,7 @@ class PostJsonKeyToJsonInputParamChangeRector extends AbstractRector
                     }
 
                     $items = [];
+                    /** @var ArrayItem $returnItem */
                     foreach ($returnExpression->items as $returnItem) {
                         $returnItemValue = $returnItem->value;
                         if (!$returnItemValue instanceof New_) {
@@ -188,7 +197,7 @@ class PostJsonKeyToJsonInputParamChangeRector extends AbstractRector
 
                         $items[] = new ArrayItem(new New_(
                             new FullyQualified('Tomaj\NetteApi\Params\JsonInputParam'),
-                            [new Arg(new String_('json')), new Arg(new String_(json_encode($schema, JSON_PRETTY_PRINT)))]
+                            [new Arg(new String_('json')), new Arg(new String_(json_encode($schema, JSON_PRETTY_PRINT) ?: '{}'))]
                         ));
                     }
 
@@ -203,6 +212,11 @@ class PostJsonKeyToJsonInputParamChangeRector extends AbstractRector
             $this->handleProcessed = true;
             $parameters = self::$parameters[$className] ?? null;
             if (!$parameters) {
+                return null;
+            }
+
+            $stmts = $node->stmts;
+            if (!is_array($stmts)) {
                 return null;
             }
 
@@ -232,7 +246,7 @@ class PostJsonKeyToJsonInputParamChangeRector extends AbstractRector
                 );
             }
 
-            $stmts = array_merge($newStatements, $node->stmts);
+            $stmts = array_merge($newStatements, $stmts);
 
             $subNodes = [
                 'flags' => $node->flags,
