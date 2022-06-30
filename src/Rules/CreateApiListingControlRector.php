@@ -27,11 +27,11 @@ class CreateApiListingControlRector extends AbstractRector
             return null;
         }
 
-        if (!isset($node->args[2])) {
+        if (!isset($node->getArgs()[2])) {
             return null;
         }
 
-        $apiDeciderNode = $node->args[2]->value;
+        $apiDeciderNode = $node->getArgs()[2]->value;
         return new New_(new FullyQualified('Tomaj\NetteApi\Component\ApiListingControl'), [new Arg($apiDeciderNode)]);
     }
 
@@ -41,7 +41,6 @@ class CreateApiListingControlRector extends AbstractRector
             new CodeSample(
                 '$apiListing = new \Tomaj\NetteApi\Component\ApiListingControl($this, "apiListingControl", $this->apiDecider);',
                 '$apiListing = new \Tomaj\NetteApi\Component\ApiListingControl($this->apiDecider);'
-            )]
-        );
+            )]);
     }
 }

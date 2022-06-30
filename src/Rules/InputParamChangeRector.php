@@ -4,10 +4,10 @@ namespace Rector\TomajNetteApi\Rules;
 
 use PhpParser\Node;
 use PhpParser\Node\Arg;
+use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\New_;
-use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\Scalar\String_;
 use Rector\Core\Rector\AbstractRector;
@@ -31,7 +31,7 @@ class InputParamChangeRector extends AbstractRector
             return null;
         }
 
-        $typeNode = $node->args[0]->value ?? null;
+        $typeNode = $node->getArgs()[0]->value ?? null;
         if (!$typeNode) {
             return null;
         }
@@ -73,7 +73,7 @@ class InputParamChangeRector extends AbstractRector
             return null;
         }
 
-        $nameNode = $node->args[1]->value ?? null;
+        $nameNode = $node->getArgs()[1]->value ?? null;
         if (!$nameNode) {
             return null;
         }
@@ -82,7 +82,7 @@ class InputParamChangeRector extends AbstractRector
 
         // transform required
         $isRequired = false;
-        $isRequiredNode = $node->args[2]->value ?? null;
+        $isRequiredNode = $node->getArgs()[2]->value ?? null;
         if ($isRequiredNode instanceof ClassConstFetch) {
             $name = $this->getName($isRequiredNode);
             if ($name === 'Tomaj\NetteApi\Params\InputParam::REQUIRED') {
@@ -99,7 +99,7 @@ class InputParamChangeRector extends AbstractRector
         }
 
         // transform available values
-        $availableValuesNode = $node->args[3] ?? null;
+        $availableValuesNode = $node->getArgs()[3] ?? null;
         if ($availableValuesNode && $availableValuesNode->value instanceof ConstFetch) {
             $availableValuesNodeValue = $this->getName($availableValuesNode->value);
             if ($availableValuesNodeValue === 'null') {
@@ -112,7 +112,7 @@ class InputParamChangeRector extends AbstractRector
 
         // transform is multi
         $isMulti = false;
-        $isMultiNode = $node->args[4]->value ?? null;
+        $isMultiNode = $node->getArgs()[4]->value ?? null;
         if ($isMultiNode instanceof ConstFetch) {
             $value = $this->getName($isMultiNode);
             if ($value === 'true') {
@@ -143,8 +143,6 @@ class InputParamChangeRector extends AbstractRector
         (new \Tomaj\NetteApi\Params\PostInputParam("post_param"))->setRequired(),
         (new \Tomaj\NetteApi\Params\GetInputParam("types"))->setRequired()->setAvailableValues(["type1" => "Type 1", "type2" => "Type 2"]),
     ];
-}'
-            )]
-        );
+}')]);
     }
 }

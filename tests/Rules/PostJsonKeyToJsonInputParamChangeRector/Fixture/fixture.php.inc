@@ -1,12 +1,23 @@
 <?php
 
-class EventListingHandler extends \Tomaj\NetteApi\Handlers\BaseHandler
+namespace Tomaj\NetteApi\Handlers;
+
+interface ApiHandlerInterface
+{
+}
+
+class BaseHandler implements ApiHandlerInterface
+{
+}
+
+class EventListingHandler extends BaseHandler
 {
     public function params()
     {
         return [
             new \Tomaj\NetteApi\Params\InputParam(\Tomaj\NetteApi\Params\InputParam::TYPE_POST_JSON_KEY, 'key1', \Tomaj\NetteApi\Params\InputParam::OPTIONAL, null, true),
-            new \Tomaj\NetteApi\Params\InputParam(\Tomaj\NetteApi\Params\InputParam::TYPE_POST_JSON_KEY, 'key2', \Tomaj\NetteApi\Params\InputParam::REQUIRED),
+            new \Tomaj\NetteApi\Params\InputParam(\Tomaj\NetteApi\Params\InputParam::TYPE_POST_JSON_KEY, 'key2', \Tomaj\NetteApi\Params\InputParam::OPTIONAL, ['a', 'b', 'c']),
+            new \Tomaj\NetteApi\Params\InputParam(\Tomaj\NetteApi\Params\InputParam::TYPE_POST_JSON_KEY, 'key3', \Tomaj\NetteApi\Params\InputParam::REQUIRED),
         ];
     }
 }
@@ -14,7 +25,17 @@ class EventListingHandler extends \Tomaj\NetteApi\Handlers\BaseHandler
 -----
 <?php
 
-class EventListingHandler extends \Tomaj\NetteApi\Handlers\BaseHandler
+namespace Tomaj\NetteApi\Handlers;
+
+interface ApiHandlerInterface
+{
+}
+
+class BaseHandler implements ApiHandlerInterface
+{
+}
+
+class EventListingHandler extends BaseHandler
 {
     public function params()
     {
@@ -25,11 +46,19 @@ class EventListingHandler extends \Tomaj\NetteApi\Handlers\BaseHandler
             "type": "array"
         },
         "key2": {
+            "type": "string",
+            "enum": [
+                "a",
+                "b",
+                "c"
+            ]
+        },
+        "key3": {
             "type": "string"
         }
     },
     "required": [
-        "key2"
+        "key3"
     ]
 }')];
     }

@@ -2,11 +2,11 @@
 
 namespace Rector\TomajNetteApi\Rules;
 
-use PHPStan\Type\ObjectType;
 use PhpParser\Node;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\Variable;
+use PHPStan\Type\ObjectType;
 use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -32,20 +32,30 @@ class ChangeApiListingOnClickToCallbackRector extends AbstractRector
             return null;
         }
 
-        return new Assign(new Variable($node->var->name . '->onClick[]'), $node->args[0]->value);
+        if (!$node->var instanceof Variable) {
+            return null;
+        }
+
+        if (!is_string($node->var->name)) {
+            return null;
+        }
+
+        return new Assign(new Variable($node->var->name . '->onClick[]'), $node->getArgs()[0]->value);
     }
 
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition('Changes onClick(Closure) to ->onClick[] = Closure', [
-            new CodeSample('$apiListing = new \Tomaj\NetteApi\Component\ApiListingControl($this, \'apiListingControl\', $this->apiDecider);
+            new CodeSample(
+                '$apiListing = new \Tomaj\NetteApi\Component\ApiListingControl($this, \'apiListingControl\', $this->apiDecider);
 $apiListing->onClick(function ($method, $version, $package, $apiAction) {
     $this->redirect(\'show\', $method, $version, $package, $apiAction);
 });',
                 '$apiListing = new \Tomaj\NetteApi\Component\ApiListingControl($this, \'apiListingControl\', $this->apiDecider);
 $apiListing->onClick[] = function ($method, $version, $package, $apiAction) {
     $this->redirect(\'show\', $method, $version, $package, $apiAction);
-};')
+};'
+            ),
         ]);
     }
 }
