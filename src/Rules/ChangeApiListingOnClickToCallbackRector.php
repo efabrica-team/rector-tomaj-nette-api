@@ -2,11 +2,11 @@
 
 namespace Rector\TomajNetteApi\Rules;
 
-use PHPStan\Type\ObjectType;
 use PhpParser\Node;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\Variable;
+use PHPStan\Type\ObjectType;
 use Rector\Core\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -55,7 +55,7 @@ $apiListing->onClick(function ($method, $version, $package, $apiAction) {
 $apiListing->onClick[] = function ($method, $version, $package, $apiAction) {
     $this->redirect(\'show\', $method, $version, $package, $apiAction);
 };'
-            )
+            ),
         ]);
     }
 }

@@ -1,13 +1,5 @@
 <?php
 
-use Rector\Composer\Rector\ChangePackageVersionComposerRector;
-use Rector\Composer\ValueObject\PackageAndVersion;
-use Rector\Config\RectorConfig;
-use Rector\TomajNetteApi\Rules\ChangeApiListingOnClickToCallbackRector;
-use Rector\TomajNetteApi\Rules\CreateApiConsoleControlRector;
-use Rector\TomajNetteApi\Rules\CreateApiListingControlRector;
-use Rector\TomajNetteApi\Rules\InputParamChangeRector;
-use Rector\TomajNetteApi\Rules\PostJsonKeyToJsonInputParamChangeRector;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\BooleanType;
 use PHPStan\Type\IntegerType;
@@ -16,8 +8,16 @@ use PHPStan\Type\NullType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\UnionType;
+use Rector\Composer\Rector\ChangePackageVersionComposerRector;
+use Rector\Composer\ValueObject\PackageAndVersion;
+use Rector\Config\RectorConfig;
 use Rector\Renaming\Rector\MethodCall\RenameMethodRector;
 use Rector\Renaming\ValueObject\MethodCallRename;
+use Rector\TomajNetteApi\Rules\ChangeApiListingOnClickToCallbackRector;
+use Rector\TomajNetteApi\Rules\CreateApiConsoleControlRector;
+use Rector\TomajNetteApi\Rules\CreateApiListingControlRector;
+use Rector\TomajNetteApi\Rules\InputParamChangeRector;
+use Rector\TomajNetteApi\Rules\PostJsonKeyToJsonInputParamChangeRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\AddParamTypeDeclarationRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\AddReturnTypeDeclarationRector;
 use Rector\TypeDeclaration\ValueObject\AddParamTypeDeclaration;
@@ -210,6 +210,6 @@ return static function (RectorConfig $rectorConfig): void {
     ]);
 
     $rectorConfig->ruleWithConfiguration(ChangePackageVersionComposerRector::class, [
-        new PackageAndVersion('tomaj/nette-api', '^2.0')
+        new PackageAndVersion('tomaj/nette-api', '^2.0'),
     ]);
 };
