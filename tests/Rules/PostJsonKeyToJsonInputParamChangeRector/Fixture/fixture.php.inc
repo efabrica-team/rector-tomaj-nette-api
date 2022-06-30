@@ -1,6 +1,16 @@
 <?php
 
-class EventListingHandler extends \Tomaj\NetteApi\Handlers\BaseHandler
+namespace Tomaj\NetteApi\Handlers;
+
+interface ApiHandlerInterface
+{
+}
+
+class BaseHandler implements ApiHandlerInterface
+{
+}
+
+class EventListingHandler extends BaseHandler
 {
     public function params()
     {
@@ -15,7 +25,17 @@ class EventListingHandler extends \Tomaj\NetteApi\Handlers\BaseHandler
 -----
 <?php
 
-class EventListingHandler extends \Tomaj\NetteApi\Handlers\BaseHandler
+namespace Tomaj\NetteApi\Handlers;
+
+interface ApiHandlerInterface
+{
+}
+
+class BaseHandler implements ApiHandlerInterface
+{
+}
+
+class EventListingHandler extends BaseHandler
 {
     public function params()
     {
